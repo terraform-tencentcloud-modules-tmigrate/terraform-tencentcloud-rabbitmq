@@ -1,13 +1,19 @@
 ################################################################################
 # Availability Zone Data Source
+#
+# Use region-level data source (tencentcloud_availability_zones) instead of the
+# product-scoped one (tencentcloud_availability_zones_by_product), because:
+#   1. Zone name → zone id is a region-wide fact, independent of any product.
+#   2. The product-scoped variant only returns AZs where that product is on sale,
+#      which caused "Invalid index" errors when an AZ is supported by RabbitMQ
+#      but not by the chosen probe product (e.g. CVM not selling in az2 while
+#      RabbitMQ does).
 ################################################################################
-data "tencentcloud_availability_zones_by_product" "zones" {
-  product = "cvm"
-}
+data "tencentcloud_availability_zones" "zones" {}
 
 locals {
-  # Build a map of zone name to zone id
-  zone_id_map = { for z in data.tencentcloud_availability_zones_by_product.zones.zones : z.name => z.id }
+  # Build a map of zone name to zone id (region-wide, product-independent)
+  zone_id_map = { for z in data.tencentcloud_availability_zones.zones.zones : z.name => z.id }
   # Convert zone names to zone ids
   zone_ids = [for name in var.availability_zones : local.zone_id_map[name]]
 }
