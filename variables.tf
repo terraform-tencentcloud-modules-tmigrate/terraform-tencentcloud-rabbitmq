@@ -121,12 +121,6 @@ variable "enable_public_access" {
   default     = false
 }
 
-variable "band_width" {
-  description = "Public network bandwidth in Mbps. Only effective when enable_public_access is true."
-  type        = number
-  default     = 0
-}
-
 ################################################################################
 # Resource Tags
 ################################################################################
