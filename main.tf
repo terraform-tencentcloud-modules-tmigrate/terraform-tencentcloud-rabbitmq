@@ -34,6 +34,8 @@ resource "tencentcloud_tdmq_rabbitmq_vip_instance" "instance" {
   time_span                             = var.time_span
   auto_renew_flag                       = var.auto_renew_flag
   enable_create_default_ha_mirror_queue = var.enable_create_default_ha_mirror_queue
+  enable_public_access                  = var.enable_public_access
+  band_width                            = var.band_width
 
   dynamic "resource_tags" {
     for_each = [for k in reverse(sort(keys(var.tags))) : { key = k, value = var.tags[k] }]

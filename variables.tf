@@ -115,6 +115,18 @@ variable "enable_create_default_ha_mirror_queue" {
   default     = false
 }
 
+variable "enable_public_access" {
+  description = "Whether to enable public network access. Default is false."
+  type        = bool
+  default     = false
+}
+
+variable "band_width" {
+  description = "Public network bandwidth in Mbps. Only effective when enable_public_access is true."
+  type        = number
+  default     = 0
+}
+
 ################################################################################
 # Resource Tags
 ################################################################################
